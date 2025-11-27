@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Cricket Universe 2025</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- MAIN STYLE -->
+<style>
+    /* GLOBAL RESET */
+    * { margin:0; padding:0; box-sizing:border-box; }
+
+    body {
+        font-family: 'Segoe UI', Tahoma, sans-serif;
+        background: linear-gradient(135deg, #0047ff, #ffe600);
+        color: #fff;
+        transition: background 0.5s, color 0.5s;
+    }
+
+    /* DARK MODE */
+    body.dark {
+        background: #0c0c0c;
+        color: #e0e0e0;
+    }
+
+    /* HEADER */
+    header {
+        padding: 25px;
+        text-align: center;
+        font-size: 40px;
+        font-weight: bold;
+        background: rgba(0,0,0,0.25);
+        backdrop-filter: blur(6px);
+        letter-spacing: 2px;
+        position: sticky;
+        top:0;
+        z-index: 999;
+        border-bottom: 2px solid rgba(255,255,255,0.2);
+    }
+
+    /* NAVIGATION */
+    nav {
+        display: flex;
+        justify-content: center;
+        gap: 25px;
+        padding: 18px;
+        background: rgba(255,255,255,0.15);
+        backdrop-filter: blur(5px);
+    }
+
+    nav a {
+        cursor: pointer;
+        color: #fff;
+        font-size: 18px;
+        text-decoration: none;
+        padding: 10px 14px;
+        border-radius: 10px;
+        transition: 0.3s;
+        font-weight: 600;
+    }
+
+    nav a:hover {
+        background: rgba(0,0,0,0.3);
+        transform: translateY(-3px);
+    }
+
+    /* SECTION FORMATTING */
+    section {
+        padding: 40px;
+        display: none;
+        animation: fadeIn 0.6s;
+        max-width: 1200px;
+        margin:auto;
+    }
+    .active { display: block; }
+
+    @keyframes fadeIn {
+        from {opacity: 0; transform: translateY(20px);}
+        to {opacity: 1; transform: translateY(0);}
+    }
+
+    /* HERO BANNER */
+    .hero {
+        height: 300px;
+        background: url('https://images.pexels.com/photos/269948/pexels-photo-269948.jpeg') center/cover no-repeat;
+        border-radius: 20px;
+        margin-bottom: 40px;
+        position: relative;
+        overflow:hidden;
+    }
+    .hero::after {
+        content: "";
+        position:absolute;
+        width:100%;
+        height:100%;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.4), rgba(0,0,0,0.8));
+    }
+    .hero-text {
+        position: absolute;
+        bottom: 20px;
+        left: 20px;
+        font-size: 30px;
+        font-weight: bold;
+        z-index: 10;
+    }
+
+    /* CARDS */
+    .card {
+        background: rgba(0,0,0,0.35);
+        padding: 25px;
+        border-radius: 15px;
+        margin-bottom: 25px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+        transition: transform .3s, background .3s;
+    }
+    .card:hover {
+        transform: scale(1.03);
+        background: rgba(0,0,0,0.5);
+    }
+
+    .card h3 { margin-bottom: 10px; color: #ff0; }
+
+    /* GRID LAYOUT */
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+        gap: 20px;
+    }
+
+    /* PLAYER CARDS */
+    .player {
+        background: rgba(255,255,255,0.1);
+        padding: 20px;
+        border-radius: 20px;
+        text-align:center;
+        transition: .4s;
+    }
+    .player:hover {
+        transform: translateY(-10px) scale(1.05);
+        background: rgba(255,255,255,0.2);
+    }
+
+    .player img {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        border: 4px solid #fff;
+        margin-bottom: 15px;
+    }
+
+    /* SCORE BLOCK */
+    #score-container .card {
+        border-left: 5px solid #ff0;
+    }
+
+    /* RANKING BARS */
+    .rank-bar {
+        background: rgba(255,255,255,0.2);
+        height: 20px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        overflow:hidden;
+        position:relative;
+    }
+
+    .rank-fill {
+        height:100%;
+        background: #00ff99;
+        width:0%;
+        animation: grow 2s forwards;
+    }
+    @keyframes grow { from {width:0;} }
+
+    /* FOOTER */
+    footer {
+        text-align:center;
+        padding:20px;
+        margin-top:40px;
+        background: rgba(0,0,0,0.3);
+    }
+
+    /* DARK MODE BUTTON */
+    #darkBtn {
+        position: fixed;
+        right: 20px;
+        bottom: 20px;
+        padding: 12px 18px;
+        background: rgba(0,0,0,0.4);
+        border: none;
+        border-radius: 10px;
+        font-size: 16px;
+        color: #fff;
+        cursor:pointer;
+        transition:0.3s;
+    }
+    #darkBtn:hover {
+        transform: scale(1.1);
+        background: rgba(0,0,0,0.7);
+    }
+
+</style>
+</head>
+
+<body>
+
+<header>🏏 Cricket Universe 2025</header>
+
+<nav>
+    <a onclick="showTab('home')">Home</a>
+    <a onclick="showTab('news')">News</a>
+    <a onclick="showTab('scores')">Live Scores</a>
+    <a onclick="showTab('matches')">2025 Matches</a>
+    <a onclick="showTab('players')">Players</a>
+    <a onclick="showTab('rankings')">Rankings</a>
+    <a onclick="showTab('about')">About</a>
+</nav>
+
+<!-- HOME -->
+<section id="home" class="active">
+    <div class="hero">
+        <div class="hero-text">Welcome to the Future of Cricket</div>
+    </div>
+
+    <div class="card">
+        <h3>🔥 Latest Highlight</h3>
+        <p>2025 will bring massive tournaments, new talents, and global cricket evolution.</p>
+    </div>
+
+    <div class="card">
+        <h3>✨ New Features</h3>
+        <ul>
+            <li>Live score engine</li>
+            <li>Rankings with animations</li>
+            <li>Player profiles</li>
+            <li>News grid with fade-in</li>
+        </ul>
+    </div>
+</section>
+
+<!-- NEWS -->
+<section id="news">
+    <h2>📰 Latest Cricket News</h2>
+    <div class="grid">
+        <div class="card"><h3>Champions Trophy 2025 Confirmed</h3><p>The tournament returns after 8 years, hosted in Pakistan.</p></div>
+        <div class="card"><h3>Massive Rise in T20 Leagues</h3><p>Over 10 new leagues are expected to launch by mid-2025.</p></div>
+        <div class="card"><h3>Technology in Cricket</h3><p>AI-powered review systems to be introduced next year.</p></div>
+        <div class="card"><h3>Record-Breaking Viewership</h3><p>Cricket surpasses football viewership in several regions.</p></div>
+    </div>
+</section>
+
+<!-- LIVE SCORES -->
+<section id="scores">
+    <h2>📡 Live Scores</h2>
+    <div id="score-container"></div>
+</section>
+
+<!-- MATCHES -->
+<section id="matches">
+    <h2>📅 2025 Fixtures</h2>
+
+    <div class="grid">
+        <div class="card"><h3>India vs England</h3><p>Test Series — March 2025</p></div>
+        <div class="card"><h3>Australia vs Pakistan</h3><p>ODI Series — June 2025</p></div>
+        <div class="card"><h3>South Africa vs New Zealand</h3><p>T20 Series — August 2025</p></div>
+        <div class="card"><h3>ICC Champions Trophy</h3><p>October 2025</p></div>
+    </div>
+</section>
+
+<!-- PLAYERS -->
+<section id="players">
+    <h2>🏅 Popular Players</h2>
+
+    <div class="grid">
+        <div class="player">
+            <img src="https://i.imgur.com/WxNkK7F.png">
+            <h3>Virat Kohli</h3>
+            <p>Batsman | India</p>
+        </div>
+
+        <div class="player">
+            <img src="https://i.imgur.com/GvO9bSo.png">
+            <h3>Babar Azam</h3>
+            <p>Batsman | Pakistan</p>
+        </div>
+
+        <div class="player">
+            <img src="https://i.imgur.com/0pO5QFv.png">
+            <h3>Pat Cummins</h3>
+            <p>Bowler | Australia</p>
+        </div>
+
+        <div class="player">
+            <img src="https://i.imgur.com/ntQGhQB.png">
+            <h3>Kane Williamson</h3>
+            <p>Batsman | New Zealand</p>
+        </div>
+    </div>
+</section>
+
+<!-- RANKINGS -->
+<section id="rankings">
+    <h2>📊 ICC Rankings 2025</h2>
+
+    <div class="card">
+        <h3>Test Rankings</h3>
+        <p>India</p>
+        <div class="rank-bar"><div class="rank-fill" style="width:95%"></div></div>
+        <p>Australia</p>
+        <div class="rank-bar"><div class="rank-fill" style="width:90%"></div></div>
+        <p>England</p>
+        <div class="rank-bar"><div class="rank-fill" style="width:88%"></div></div>
+    </div>
+
+    <div class="card">
+        <h3>ODI Rankings</h3>
+        <p>Pakistan</p>
+        <div class="rank-bar"><div class="rank-fill" style="width:92%"></div></div>
+        <p>India</p>
+        <div class="rank-bar"><div class="rank-fill" style="width:89%"></div></div>
+        <p>Australia</p>
+        <div class="rank-bar"><div class="rank-fill" style="width:87%"></div></div>
+    </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+    <h2>ℹ️ About Cricket Universe</h2>
+    <p>A modern cricket platform designed for 2025 fans.</p>
+</section>
+
+<footer>
+    © 2025 Cricket Universe — All rights reserved.
+</footer>
+
+<button id="darkBtn" onclick="toggleDark()">Toggle Dark Mode</button>
+
+
+<!-- JS -->
+<script>
+function showTab(id) {
+    document.querySelectorAll("section").forEach(s => s.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+}
+
+function toggleDark() {
+    document.body.classList.toggle("dark");
+}
+
+/* LIVE SCORES */
+const API_URL = "https://api.cricapi.com/v1/cricScore?apikey=YOUR_KEY_HERE";
+
+async function loadScores() {
+    const box = document.getElementById("score-container");
+    box.innerHTML = "<p>Loading scores...</p>";
+
+    try {
+        const res = await fetch(API_URL);
+        const data = await res.json();
+
+        box.innerHTML = "";
+
+        if (!data.data) {
+            box.innerHTML = "<p>No matches live right now.</p>";
+            return;
+        }
+
+        data.data.forEach(m => {
+            const div = document.createElement("div");
+            div.className = "card";
+            div.innerHTML = `
+                <h3>${m.t1} vs ${m.t2}</h3>
+                <p>${m.status}</p>
+                <p><strong>${m.t1s || ""}</strong> - <strong>${m.t2s || ""}</strong></p>
+            `;
+            box.appendChild(div);
+        });
+
+    } catch (e) {
+        box.innerHTML = "<p>Could not load live scores.</p>";
+    }
+}
+
+loadScores();
+setInterval(loadScores, 20000);
+</script>
+
+</body>
+</html>

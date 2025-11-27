@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Cricket Universe 2025 — Ultra Advanced</title>
+<!--
+  Ultra advanced single-file cricket app:
+  - Copy/paste into index.html
+  - Replace API placeholders with real keys
+  - Read the "API KEY" panel inside the page for instructions
+-->
+<style>
+  :root{
+    --bg1: linear-gradient(135deg,#00172d,#003b5c);
+    --accent: #00ff99;
+    --accent-2: #7cfffb;
+    --card-bg: rgba(255,255,255,0.06);
+    --glass: rgba(255,255,255,0.04);
+    --neon-shadow: 0 0 12px rgba(0,255,153,0.12), 0 0 24px rgba(0,255,153,0.06);
+    --glass-border: rgba(255,255,255,0.06);
+    --glass-strong: rgba(255,255,255,0.08);
+    --muted: rgba(255,255,255,0.65);
+    font-family: Inter, 'Segoe UI', system-ui, -apple-system, 'Helvetica Neue', Arial;
+  }
+  html,body{height:100%;margin:0;background:var(--bg1);color:#e6fff6}
+  body.neon{
+    background: radial-gradient(1200px 600px at 10% 10%, rgba(0,255,153,0.05), transparent),
+                radial-gradient(900px 500px at 90% 80%, rgba(124,255,251,0.03), transparent),
+                linear-gradient(135deg,#001726,#001b2e 40%, #001a3a);
+    color:#eafff0;
+  }
+  header{
+    display:flex;align-items:center;gap:16px;justify-content:space-between;padding:18px 24px;
+    backdrop-filter: blur(6px);
+    border-bottom:1px solid rgba(255,255,255,0.04);
+    position:sticky;top:0;z-index:1000;background:linear-gradient(180deg,rgba(0,0,0,0.15),transparent);
+  }
+  .brand{display:flex;align-items:center;gap:12px}
+  .logo{
+    width:46px;height:46px;border-radius:10px;background:linear-gradient(135deg,#0033ff,#00ff99);
+    display:flex;align-items:center;justify-content:center;font-weight:800;color:#001;
+    box-shadow:0 6px 20px rgba(0,0,0,0.6),0 0 18px rgba(0,255,153,0.08);
+  }
+  .title{font-size:20px;font-weight:700;letter-spacing:0.6px}
+  nav{display:flex;gap:8px;align-items:center}
+  nav button{background:transparent;border:1px solid transparent;padding:10px 12px;border-radius:10px;color:var(--muted);cursor:pointer;font-weight:600}
+  nav button:hover{transform:translateY(-3px);color:var(--accent);border-color:rgba(0,255,153,0.12)}
+  .controls{display:flex;gap:8px;align-items:center}
+  main{padding:24px;max-width:1200px;margin:18px auto}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px}
+  .card{
+    background:var(--card-bg);padding:18px;border-radius:14px;border:1px solid var(--glass-border);
+    box-shadow:var(--neon-shadow);
+    transition:transform .25s, box-shadow .25s;
+    overflow:hidden;
+  }
+  .card:hover{transform:translateY(-8px)}
+  h2{font-size:18px;margin:0 0 8px;color:var(--accent-2)}
+  p.small{font-size:13px;color:var(--muted);margin:8px 0}
+  /* Hero */
+  .hero{
+    display:flex;gap:18px;align-items:center;padding:20px;border-radius:14px;background:linear-gradient(90deg, rgba(0,0,0,0.18), rgba(0,0,0,0.06));
+    border:1px solid rgba(255,255,255,0.03);
+  }
+  .hero .left{flex:1}
+  .hero .right{width:240px;text-align:right}
+  .big{font-size:22px;font-weight:800}
+  /* tabs */
+  .tabs{display:flex;gap:10px;margin:16px 0;flex-wrap:wrap}
+  .tab{background:transparent;border:1px solid rgba(255,255,255,0.04);padding:8px 12px;border-radius:10px;color:var(--muted);cursor:pointer}
+  .tab.active{background:linear-gradient(90deg,rgba(0,255,153,0.06),rgba(124,255,251,0.02));color:var(--accent);border-color:rgba(0,255,153,0.12)}
+  /* Player cards */
+  .player-card{display:flex;gap:12px;align-items:center;padding:12px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),transparent);border:1px solid rgba(255,255,255,0.03)}
+  .player-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(180deg,#fff,#ddd);overflow:hidden;box-shadow:0 6px 20px rgba(0,0,0,0.5)}
+  .player-info h4{margin:0}
+  .player-meta{font-size:13px;color:var(--muted)}
+  /* flips */
+  .flip-card{perspective:1000px}
+  .flip-inner{transition:transform .6s;transform-style:preserve-3d;position:relative}
+  .flip-inner.flipped{transform:rotateY(180deg)}
+  .flip-face{position:absolute;inset:0;backface-visibility:hidden;border-radius:12px}
+  .flip-front{padding:12px}
+  .flip-back{transform:rotateY(180deg);padding:12px;background:linear-gradient(180deg,rgba(0,0,0,0.12),rgba(0,0,0,0.06))}
+  /* neon accents */
+  .badge{display:inline-block;padding:6px 10px;border-radius:8px;background:rgba(0,0,0,0.25);border:1px solid rgba(0,255,153,0.12);color:var(--accent);font-weight:700}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:8px 12px;border-radius:10px;background:linear-gradient(90deg,#002a7a,#003b8f);border:none;color:white;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,0.6)}
+  .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.04);color:var(--muted)}
+  .btn.small{padding:6px 8px;font-size:13px}
+  /* modal */
+  .modal{position:fixed;inset:0;background:linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.72));display:none;align-items:center;justify-content:center;z-index:2000;padding:20px}
+  .modal.open{display:flex}
+  .modal .box{width:900px;max-width:96%;background:linear-gradient(180deg,#08222b,#021018);border-radius:12px;padding:18px;border:1px solid rgba(0,255,153,0.06);box-shadow:0 20px 60px rgba(0,0,0,0.6)}
+  .modal h3{margin:4px 0 10px}
+  /* tables */
+  table{width:100%;border-collapse:collapse}
+  th,td{padding:8px;border-bottom:1px dashed rgba(255,255,255,0.03);text-align:left;color:var(--muted);font-size:13px}
+  th{color:var(--accent-2)}
+  /* live commentary */
+  .commentary{max-height:240px;overflow:auto;padding:8px;border-radius:8px;background:linear-gradient(180deg,rgba(0,0,0,0.05),transparent);border:1px solid rgba(255,255,255,0.03)}
+  .ball{padding:6px;margin-bottom:6px;border-radius:8px;background:rgba(255,255,255,0.02);display:flex;gap:8px;align-items:center}
+  .ball .over{min-width:42px;background:rgba(0,0,0,0.2);padding:6px;border-radius:6px;color:var(--accent);font-weight:700}
+  /* match scoreboard */
+  .scoreboard{display:flex;gap:12px;align-items:center;justify-content:space-between}
+  .scorebox{padding:14px;border-radius:10px;background:linear-gradient(90deg,rgba(0,0,0,0.12),transparent);width:48%}
+  .muted-label{font-size:12px;color:var(--muted)}
+  /* stadium */
+  .stadium-hero{height:140px;border-radius:10px;background-size:cover;background-position:center;margin-bottom:8px;filter:brightness(.85)}
+  /* small screens */
+  @media (max-width:720px){
+    .scoreboard{flex-direction:column;align-items:stretch}
+    .hero{flex-direction:column}
+  }
+</style>
+</head>
+<body class="neon">
+
+<header>
+  <div class="brand">
+    <div class="logo">CU</div>
+    <div>
+      <div class="title">Cricket Universe 2025</div>
+      <div style="font-size:12px;color:var(--muted)">Ultra platform • World records • Simulations • Live feeds</div>
+    </div>
+  </div>
+
+  <nav aria-label="Main navigation">
+    <button class="tab active" data-tab="home">Home</button>
+    <button class="tab" data-tab="teams">Teams</button>
+    <button class="tab" data-tab="players">Players</button>
+    <button class="tab" data-tab="stadiums">Stadiums</button>
+    <button class="tab" data-tab="records">World Records</button>
+    <button class="tab" data-tab="live">Live</button>
+    <button class="tab" data-tab="tools">Tools</button>
+  </nav>
+
+  <div class="controls">
+    <button class="btn small" id="toggleNeon">Toggle Neon</button>
+    <button class="btn small ghost" id="openApiGuide">API Key Guide</button>
+  </div>
+</header>
+
+<main>
+  <!-- HOME -->
+  <section id="home" class="card">
+    <div class="hero">
+      <div class="left">
+        <div class="big">Welcome to Cricket Universe — <span class="badge">Neon Edition</span></div>
+        <p class="small">Everything a player, coach or fan needs — live data, simulations, predictions and a player/stadium database.</p>
+        <div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" id="startSim">Simulate Match</button>
+          <button class="btn ghost" id="openSimModal">Open Simulator</button>
+          <button class="btn" id="refreshRecords">Refresh World Records</button>
+        </div>
+      </div>
+      <div class="right">
+        <div class="muted-label">Local Time</div>
+        <div id="localTime" style="font-weight:800;margin-top:6px">--</div>
+        <div style="margin-top:12px" class="muted-label">Current Weather (demo)</div>
+        <div id="shortWeather" style="font-weight:700">--</div>
+      </div>
+    </div>
+
+    <div style="margin-top:18px" class="grid">
+      <div class="card">
+        <h2>Live Score Engine</h2>
+        <p class="small">Plug your live feed (WebSocket or REST) into the Live panel.</p>
+        <div style="margin-top:12px" id="liveSummary">No live matches connected — using simulated feed.</div>
+      </div>
+
+      <div class="card">
+        <h2>Match Prediction</h2>
+        <p class="small">Select teams + weather and run an instant prediction.</p>
+        <div style="margin-top:8px;display:flex;gap:8px">
+          <select id="predHome"></select>
+          <select id="predAway"></select>
+          <button class="btn small" id="runPred">Run</button>
+        </div>
+        <div id="predResult" style="margin-top:12px"></div>
+      </div>
+
+      <div class="card">
+        <h2>Quick Player Search</h2>
+        <input id="quickSearch" placeholder="Search by name, country..." style="width:100%;padding:10px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04);color:inherit" />
+        <div id="quickResults" style="margin-top:12px"></div>
+      </div>
+
+      <div class="card">
+        <h2>Shortcuts</h2>
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <button class="btn ghost" onclick="showTab('players')">Open Player Database</button>
+          <button class="btn ghost" onclick="showTab('teams')">Open Teams</button>
+          <button class="btn ghost" onclick="showTab('stadiums')">Open Stadiums</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAMS -->
+  <section id="teams" class="card" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h2>Team Pages</h2>
+      <div class="muted-label">Explore squads, captains, coaches and stats</div>
+    </div>
+
+    <div class="tabs" id="teamTabs"></div>
+    <div id="teamContent" style="margin-top:12px"></div>
+  </section>
+
+  <!-- PLAYERS -->
+  <section id="players" class="card" style="display:none">
+    <div style="display:flex;justify-content:space-between;align-items:center">
+      <h2>Player Database</h2>
+      <div>
+        <select id="filterRole">
+          <option value="">All Roles</option>
+          <option value="Batsman">Batsman</option>
+          <option value="Bowler">Bowler</option>
+          <option value="Allrounder">Allrounder</option>
+        </select>
+        <select id="sortBy">
+          <option value="rating">Sort by rating</option>
+          <option value="name">Name</option>
+          <option value="runs">Runs</option>
+          <option value="wickets">Wickets</option>
+        </select>
+        <button class="btn small ghost" id="addRandomPlayer">Add Random Player (demo)</button>
+      </div>
+    </div>
+
+    <div style="margin-top:12px;display:flex;gap:12px">
+      <input id="playerSearch" placeholder="Search players..." style="flex:1;padding:10px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04)" />
+      <button class="btn small" id="clearFilters">Clear</button>
+    </div>
+
+    <div style="margin-top:12px" id="playerGrid" class="grid"></div>
+  </section>
+
+  <!-- STADIUMS -->
+  <section id="stadiums" class="card" style="display:none">
+    <h2>Stadium Database</h2>
+    <p class="small">Ground data, pitch types, capacity and top records per stadium.</p>
+    <div id="stadiumGrid" class="grid" style="margin-top:12px"></div>
+  </section>
+
+  <!-- RECORDS -->
+  <section id="records" class="card" style="display:none">
+    <h2>Auto-updating World Records</h2>
+    <p class="small">Fetch interval: <strong id="recordIntervalLabel">Manual/Mock</strong></p>
+    <div style="display:flex;gap:12px;align-items:center;margin-top:8px">
+      <button class="btn" id="forceRecords">Force Refresh</button>
+      <select id="recordSource">
+        <option value="mock">Mock (demo)</option>
+        <option value="external-csv">External CSV (URL)</option>
+      </select>
+      <input id="recordUrl" placeholder="CSV URL (if external)" style="flex:1;padding:8px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04)" />
+    </div>
+
+    <div style="margin-top:12px" id="worldRecordsGrid" class="grid"></div>
+  </section>
+
+  <!-- LIVE -->
+  <section id="live" class="card" style="display:none">
+    <h2>Live & Commentary</h2>
+    <p class="small">Real-time commentary engine — currently running a simulated feed. Replace `simulateCommentary()` with your WebSocket handler to switch to a real feed.</p>
+
+    <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap">
+      <div style="flex:1;min-width:320px" class="card">
+        <h3>Live Matches</h3>
+        <div id="liveMatches"></div>
+      </div>
+
+      <div style="flex:1;min-width:320px" class="card">
+        <h3>Commentary</h3>
+        <div id="commentary" class="commentary"></div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn small" id="connectSim">Connect Sim Feed</button>
+          <button class="btn small ghost" id="disconnectSim">Disconnect</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:12px" class="card">
+      <h3>Scoreboard & Simulator</h3>
+      <div class="scoreboard">
+        <div class="scorebox">
+          <div class="muted-label">Home</div>
+          <div id="homeScore" style="font-size:20px;font-weight:800">--</div>
+        </div>
+        <div class="scorebox">
+          <div class="muted-label">Away</div>
+          <div id="awayScore" style="font-size:20px;font-weight:800">--</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOOLS -->
+  <section id="tools" class="card" style="display:none">
+    <h2>Developer Tools & API Guide</h2>
+    <p class="small">Store and use your API keys safely (saved locally in your browser). See below for tips on CORS and rate limits.</p>
+
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
+      <div style="flex:1;min-width:320px" class="card">
+        <h3>API Key Storage</h3>
+        <p class="small">Paste your API keys here — they will be saved to localStorage on this machine only.</p>
+        <label style="font-size:12px;color:var(--muted)">OpenWeatherMap Key</label>
+        <input id="owmKey" placeholder="Paste OpenWeatherMap API key" style="width:100%;padding:10px;border-radius:8px;background:transparent;border:1px solid rgba(255,255,255,0.04)" />
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn small" id="saveKeys">Save Keys</button>
+          <button class="btn small ghost" id="clearKeys">Clear Keys</button>
+        </div>
+        <div style="margin-top:10px" class="small muted-label">Notes: Use free tiers for testing. Avoid storing server-side keys in client apps.</div>
+      </div>
+
+      <div style="flex:1;min-width:320px" class="card">
+        <h3>How to Get Keys</h3>
+        <ol style="color:var(--muted);font-size:13px">
+          <li>OpenWeatherMap: create an account at openweathermap.org → API keys → Use "Current Weather" or "One Call".</li>
+          <li>Cric APIs: many providers exist. Use their REST or WebSocket docs and store keys similarly.</li>
+          <li>To avoid CORS: use a server-side proxy or enable CORS if owned APIs are used.</li>
+        </ol>
+      </div>
+    </div>
+
+    <div style="margin-top:12px" class="card">
+      <h3>Troubleshooting & Best Practices</h3>
+      <ul style="color:var(--muted);font-size:13px;margin:8px 0 0 16px">
+        <li>Rate limits: cache results, throttle calls, and use localStorage where possible.</li>
+        <li>CORS: If browser blocks, either host a tiny proxy or enable CORS server-side.</li>
+        <li>WebSockets: preferred for ball-by-ball commentary; REST polling is fine for scores (try 15-30s interval).</li>
+      </ul>
+    </div>
+  </section>
+
+</main>
+
+<footer style="text-align:center;padding:14px;color:var(--muted);border-top:1px solid rgba(255,255,255,0.02)">
+  © 2025 Cricket Universe • Built for demo • Paste API keys in Tools
+</footer>
+
+<!-- Modals -->
+<div id="modal" class="modal" role="dialog" aria-modal="true" aria-hidden="true">
+  <div class="box">
+    <button style="float:right" class="btn ghost" id="closeModal">Close</button>
+    <div id="modalContent"></div>
+  </div>
+</div>
+
+<script>
+/* ============================
+   VERY IMPORTANT:
+   - This file is a demo/boilerplate combining many features.
+   - Replace mock data fetches with your API endpoints.
+   - Add real API keys in Tools → API Key Storage.
+   ============================ */
+
+/* ---------- Utility & Mock Data ---------- */
+const state = {
+  players: [], teams: [], stadiums: [], records: [], simConnected: false, simInterval: null
+};
+
+function nowStr(){ return new Date().toLocaleString() }
+
+/* Sample players (mock). Extend or load from server */
+const SAMPLE_PLAYERS = [
+  {id:'p1',name:'Virat Kohli',role:'Batsman',country:'India',rating:94,runs:25000,wickets:0,avatar:'https://i.imgur.com/WxNkK7F.png'},
+  {id:'p2',name:'Babar Azam',role:'Batsman',country:'Pakistan',rating:90,runs:12000,wickets:2,avatar:'https://i.imgur.com/GvO9bSo.png'},
+  {id:'p3',name:'Pat Cummins',role:'Bowler',country:'Australia',rating:89,runs:1000,wickets:310,avatar:'https://i.imgur.com/0pO5QFv.png'},
+  {id:'p4',name:'Kane Williamson',role:'Batsman',country:'New Zealand',rating:88,runs:15000,wickets:0,avatar:'https://i.imgur.com/ntQGhQB.png'},
+  {id:'p5',name:'Allie Allround',role:'Allrounder',country:'England',rating:82,runs:4500,wickets:210,avatar:'https://picsum.photos/seed/p5/120'}
+];
+
+/* Sample teams (mock) */
+const SAMPLE_TEAMS = [
+  {code:'IND',name:'India',flag:'https://flagcdn.com/w40/in.png',captain:'Virat Kohli',coach:'Ravi Shastri',squad:['Virat Kohli','Rohit Sharma','Jasprit Bumrah'],rating:92},
+  {code:'AUS',name:'Australia',flag:'https://flagcdn.com/w40/au.png',captain:'Pat Cummins',coach:'Andrew McDonald',squad:['Pat Cummins','David Warner','Mitchell Starc'],rating:90},
+  {code:'PAK',name:'Pakistan',flag:'https://flagcdn.com/w40/pk.png',captain:'Babar Azam',coach:'Mickey Arthur',squad:['Babar Azam','Shaheen Afridi'],rating:88},
+  {code:'NZ',name:'New Zealand',flag:'https://flagcdn.com/w40/nz.png',captain:'Kane Williamson',coach:'Gary Stead',squad:['Kane Williamson','Trent Boult'],rating:86}
+];
+
+/* Sample stadiums */
+const SAMPLE_STADIUMS = [
+  {id:'s1',name:'Melbourne Cricket Ground',city:'Melbourne, AUS',capacity:100024,pitch:'Balanced',size:'160x155',records:[{type:'Highest',value:'500/4',team:'AUS'}],image:'https://images.unsplash.com/photo-1517649763962-0c623066013b?crop=entropy&auto=format&fit=crop&w=1400&q=60'},
+  {id:'s2',name:'Eden Gardens',city:'Kolkata, IND',capacity:68000,pitch:'Spin friendly',size:'150x145',records:[{type:'Highest',value:'700/4',team:'IND'}],image:'https://images.unsplash.com/photo-1543168259-7e38a9a52a0b?crop=entropy&auto=format&fit=crop&w=1400&q=60'}
+];
+
+/* Sample world records (mock) */
+const SAMPLE_RECORDS = [
+  {id:'r1',category:'Fastest 50',holder:'AB de Villiers',value:'16 balls',match:'SA vs WI 2015'},
+  {id:'r2',category:'Highest Team Total (ODI)',holder:'ENG',value:'498/4',match:'ENG vs NED 2022'},
+  {id:'r3',category:'Best Bowling',holder:'Muralitharan',value:'10/74',match:'SL vs ZIM 1994'},
+  {id:'r4',category:'Longest Six',holder:'Shahid Afridi',value:'120m',match:'PAK vs SL 2005'},
+];
+
+/* Save initial mock data into state */
+state.players = JSON.parse(JSON.stringify(SAMPLE_PLAYERS));
+state.teams = JSON.parse(JSON.stringify(SAMPLE_TEAMS));
+state.stadiums = JSON.parse(JSON.stringify(SAMPLE_STADIUMS));
+state.records = JSON.parse(JSON.stringify(SAMPLE_RECORDS));
+
+/* ---------- Helpers ---------- */
+function $(sel,ctx=document) { return ctx.querySelector(sel) }
+function $$(sel,ctx=document) { return Array.from(ctx.querySelectorAll(sel)) }
+function showTab(tabId){
+  $$('main > section').forEach(s=>s.style.display='none');
+  const t = document.getElementById(tabId);
+  if(t) t.style.display='block';
+  // tab buttons
+  $$('header nav .tab').forEach(b=>b.classList.remove('active'));
+  $$(`header nav .tab[data-tab="${tabId}"]`).forEach(b=>b.classList.add('active'));
+}
+function showModal(contentHtml){
+  const m = $('#modal'); $('#modalContent').innerHTML = contentHtml; m.classList.add('open'); m.setAttribute('aria-hidden','false');
+}
+function closeModal(){ $('#modal').classList.remove('open'); $('#modal').setAttribute('aria-hidden','true') }
+
+document.addEventListener('click', e=>{
+  if(e.target && e.target.matches('.tab')) showTab(e.target.dataset.tab);
+});
+$('#closeModal').addEventListener('click', closeModal);
+
+/* ---------- Header time & weather ---------- */
+function updateLocalTime(){ $('#localTime').textContent = nowStr(); }
+setInterval(updateLocalTime,1000); updateLocalTime();
+
+/* ---------- Player DB rendering ---------- */
+function renderPlayerGrid(){
+  const container = $('#playerGrid'); container.innerHTML = '';
+  const search = $('#playerSearch').value.trim().toLowerCase();
+  const role = $('#filterRole').value;
+  const sortBy = $('#sortBy').value;
+
+  let list = state.players.slice();
+  if(search) list = list.filter(p=> (p.name+p.country+p.role).toLowerCase().includes(search));
+  if(role) list = list.filter(p=>p.role===role);
+
+  if(sortBy==='rating') list.sort((a,b)=>b.rating-a.rating);
+  if(sortBy==='name') list.sort((a,b)=>a.name.localeCompare(b.name));
+  if(sortBy==='runs') list.sort((a,b)=>b.runs - a.runs);
+  if(sortBy==='wickets') list.sort((a,b)=>b.wickets - a.wickets);
+
+  if(list.length===0){
+    container.innerHTML = '<div class="card">No players found. Use "Add Random Player" to demo.</div>';
+    return;
+  }
+
+  list.forEach(player=>{
+    const div = document.createElement('div');
+    div.className = 'player-card flip-card';
+    div.innerHTML = `
+      <div class="flip-inner" data-id="${player.id}">
+        <div class="flip-face flip-front player-card">
+          <div class="player-avatar"><img src="${player.avatar}" alt="${player.name}" style="width:100%;height:100%;object-fit:cover"></div>
+          <div class="player-info" style="flex:1">
+            <h4>${player.name} <span style="font-size:11px;color:var(--muted)">(${player.country})</span></h4>
+            <div class="player-meta">${player.role} • Rating ${player.rating}</div>
+            <div style="margin-top:8px;font-size:13px;color:var(--muted)">Runs: ${player.runs || 0} • Wickets: ${player.wickets || 0}</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <button class="btn small" data-action="view" data-id="${player.id}">View</button>
+            <button class="btn small ghost" data-action="flip" data-id="${player.id}">Flip</button>
+          </div>
+        </div>
+        <div class="flip-face flip-back player-card" aria-hidden="true">
+          <div style="flex:1">
+            <h4>Stats & Bio</h4>
+            <div class="player-meta">Strike Rate: ${player.sr || 115} • Avg: ${player.avg || 45}</div>
+            <div style="margin-top:8px;color:var(--muted)">Bio (demo): Top level player with consistent performances. Click view for full profile.</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <button class="btn small" data-action="profile" data-id="${player.id}">Open Profile</button>
+            <button class="btn small ghost" data-action="flip" data-id="${player.id}">Back</button>
+          </div>
+        </div>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+
+  // wire up click handlers
+  $$('[data-action]', container).forEach(btn=>{
+    btn.addEventListener('click', (ev)=>{
+      const id = ev.target.dataset.id;
+      const action = ev.target.dataset.action;
+      const inner = container.querySelector(`.flip-inner[data-id="${id}"]`);
+      if(action==='flip') inner.classList.toggle('flipped');
+      if(action==='view' || action==='profile') openPlayerModal(id);
+    });
+  });
+}
+
+function openPlayerModal(id){
+  const p = state.players.find(x=>x.id===id);
+  if(!p) return;
+  showModal(`
+    <h3>${p.name} — ${p.role}</h3>
+    <div style="display:flex;gap:12px">
+      <div style="width:120px"><img src="${p.avatar}" style="width:100%;border-radius:10px"></div>
+      <div>
+        <p class="muted-label">Country: ${p.country} • Rating: ${p.rating}</p>
+        <p style="margin-top:8px;color:var(--muted)">Runs: ${p.runs || 0} • Wickets: ${p.wickets || 0} • Strike Rate: ${p.sr || 110}</p>
+        <h4 style="margin-top:12px">Recent Form</h4>
+        <table><thead><tr><th>Opp</th><th>Score</th><th>Wkts</th></tr></thead>
+          <tbody>
+            <tr><td>PAK</td><td>76</td><td>0</td></tr>
+            <tr><td>AUS</td><td>4/37</td><td>3</td></tr>
+            <tr><td>NZ</td><td>110</td><td>1</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  `);
+}
+
+/* ---------- Teams ---------- */
+function renderTeamTabs(){
+  const t = $('#teamTabs');
+  t.innerHTML = '';
+  state.teams.forEach(team=>{
+    const btn = document.createElement('button');
+    btn.className = 'tab';
+    btn.textContent = team.name;
+    btn.addEventListener('click', ()=>renderTeamPage(team.code));
+    t.appendChild(btn);
+  });
+  if(state.teams.length) renderTeamPage(state.teams[0].code);
+}
+
+function renderTeamPage(code){
+  const team = state.teams.find(t=>t.code===code);
+  if(!team) return;
+  const c = $('#teamContent');
+  c.innerHTML = `
+    <div style="display:flex;gap:12px;align-items:center">
+      <img src="${team.flag}" style="width:64px;height:42px;object-fit:cover;border-radius:6px">
+      <div>
+        <h3>${team.name} <span style="font-size:13px;color:var(--muted)">(${team.code})</span></h3>
+        <div class="muted-label">Captain: ${team.captain} • Coach: ${team.coach} • Team Rating: ${team.rating}</div>
+      </div>
+      <div style="margin-left:auto;text-align:right">
+        <div class="badge">Squad ${team.squad.length}</div>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 320px;gap:12px;margin-top:12px">
+      <div class="card">
+        <h4>Squad</h4>
+        <ul>${team.squad.map(s=>`<li style="color:var(--muted)">${s}</li>`).join('')}</ul>
+      </div>
+      <div class="card">
+        <h4>Team Stats</h4>
+        <p class="small">Win %: ${(team.rating/100*55).toFixed(1)} • Batting Depth: High • Bowling Attack: Strong</p>
+        <div style="margin-top:8px">
+          <button class="btn small" onclick="simulateTeamPerformance('${team.code}')">Simulate Team Performance</button>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+/* ---------- Stadiums ---------- */
+function renderStadiums(){
+  const grid = $('#stadiumGrid'); grid.innerHTML = '';
+  state.stadiums.forEach(s=>{
+    const div = document.createElement('div'); div.className='card';
+    div.innerHTML = `
+      <div class="stadium-hero" style="background-image:url('${s.image}')"></div>
+      <h3>${s.name}</h3>
+      <div class="muted-label">${s.city} • Capacity: ${s.capacity.toLocaleString()}</div>
+      <p class="small">Pitch: ${s.pitch} • Size: ${s.size}</p>
+      <div style="margin-top:8px">${s.records.map(r=>`<div class="badge" style="margin-right:6px">${r.type}: ${r.value}</div>`).join('')}</div>
+    `;
+    grid.appendChild(div);
+  });
+}
+
+/* ---------- World Records ---------- */
+function renderWorldRecords(){
+  const grid = $('#worldRecordsGrid'); grid.innerHTML = '';
+  state.records.forEach(r=>{
+    const card = document.createElement('div'); card.className='card';
+    card.innerHTML = `
+      <h3>${r.category}</h3>
+      <div style="font-weight:800">${r.value}</div>
+      <div style="margin-top:6px;color:var(--muted)">${r.holder} • ${r.match || ''}</div>
+    `;
+    grid.appendChild(card);
+  });
+}
+
+/* Force refresh records (demo) */
+async function fetchWorldRecords(source='mock', url=''){
+  // Demo: if external CSV is provided, you could fetch and parse it here.
+  if(source==='mock'){ state.records = JSON.parse(JSON.stringify(SAMPLE_RECORDS)); renderWorldRecords(); return; }
+  if(source==='external-csv' && url){
+    try{
+      const res = await fetch(url);
+      const text = await res.text();
+      // minimal CSV parse: expecting category,holder,value,match
+      const lines = text.split('\n').map(l=>l.trim()).filter(Boolean);
+      const recs = lines.map(line=>{
+        const cols = line.split(',');
+        return {category:cols[0]?.trim(),holder:cols[1]?.trim(),value:cols[2]?.trim(),match:cols[3]?.trim()};
+      });
+      state.records = recs;
+      renderWorldRecords();
+    }catch(err){
+      alert('Error loading CSV: '+err.message);
+    }
+  }
+}
+
+/* ---------- Live / Commentary simulation ---------- */
+function simulateCommentaryStart(){
+  if(state.simConnected) return;
+  state.simConnected = true;
+  $('#commentary').innerHTML = '';
+  $('#liveMatches').innerHTML = '';
+  // create a fake live match
+  const match = {id:'m1',t1:'IND',t2:'AUS',scoreHome:'120/3 (18.4)',scoreAway:'',status:'IND 120/3 (19 overs) - Live',overs:18.4,overNum:19};
+  $('#liveMatches').innerHTML = `<div class="card"><h4>${match.t1} vs ${match.t2}</h4><div class="muted-label">${match.status}</div></div>`;
+  // simulate ball by ball commentary
+  let overCount = 1, ball = 1;
+  state.simInterval = setInterval(()=>{
+    if(!state.simConnected) return;
+    const events = ['1','2','3','4','6','W','W','0','0','NB','WD'];
+    const e = events[Math.floor(Math.random()*events.length)];
+    const ov = `${overCount}.${ball}`;
+    const text = (e==='W') ? `WICKET! Good delivery, batter is out.` :
+                 (e==='NB') ? `No ball -> 1 extra` :
+                 (e==='WD') ? `Wide -> 1 extra` : `${e} runs.`;
+    const node = document.createElement('div'); node.className='ball';
+    node.innerHTML = `<div class="over">${ov}</div><div>${text}</div>`;
+    $('#commentary').prepend(node); // newest on top
+    // update scoreboard (simple)
+    let cur = parseInt((Math.random()*250).toFixed(0));
+    $('#homeScore').textContent = match.scoreHome;
+    $('#awayScore').textContent = match.scoreAway || '--';
+    ball++;
+    if(ball>6){ ball=1; overCount++; }
+    // stop after some time for demo
+  }, 1500);
+}
+
+function stopCommentary(){
+  state.simConnected=false;
+  if(state.simInterval) clearInterval(state.simInterval);
+  state.simInterval = null;
+  $('#liveMatches').innerHTML = '<div class="card"><h4>No live feed connected</h4></div>';
+}
+
+/* ---------- Match Simulator (AI) ---------- */
+function simulateMatch(homeCode='IND', awayCode='AUS', overs=20){
+  const home = state.teams.find(t=>t.code===homeCode) || state.teams[0];
+  const away = state.teams.find(t=>t.code===awayCode) || state.teams[1];
+  // get team baseline strengths
+  const baseHome = home.rating || 80;
+  const baseAway = away.rating || 78;
+  // simple probabilistic simulation:
+  // runs per over ~ normal distribution based on rating
+  function teamScore(base){
+    let total=0;
+    for(let o=0;o<overs;o++){
+      const mean = base/10 + 6; // 6 runs per over baseline
+      const variation = (100-base)/20; // weaker teams more variance
+      const overRuns = Math.max(0, Math.round(randomNormal(mean,variation)));
+      total += overRuns;
+    }
+    return total;
+  }
+  const homeScore = teamScore(baseHome);
+  const awayScore = teamScore(baseAway);
+  const winner = homeScore===awayScore ? 'Draw' : (homeScore>awayScore ? home.name : away.name);
+  // detailed ball-by-ball: simplified condensed commentary
+  const commentary = [];
+  commentary.push(`Match: ${home.name} vs ${away.name} — ${overs} overs`);
+  commentary.push(`${home.name} scored ${homeScore}`);
+  commentary.push(`${away.name} scored ${awayScore}`);
+  commentary.push(`Winner: ${winner}`);
+  return {home:homeScore,away:awayScore,winner,comments:commentary};
+}
+
+// utility: simple approximate normal random (Box-Muller)
+function randomNormal(mean=0,sd=1){
+  let u=0,v=0;
+  while(u===0) u=Math.random();
+  while(v===0) v=Math.random();
+  const num = Math.sqrt(-2.0*Math.log(u))*Math.cos(2*Math.PI*v);
+  return num*sd + mean;
+}
+
+/* ---------- Prediction engine (basic) ---------- */
+function runPrediction(homeCode,awayCode){
+  const home = state.teams.find(t=>t.code===homeCode);
+  const away = state.teams.find(t=>t.code===awayCode);
+  if(!home||!away) return;
+  // factor: team rating, simulated weather penalty (0-1), head2head small randomness
+  const homeScore = 50 + home.rating + Math.floor(Math.random()*10);
+  const awayScore = 50 + away.rating + Math.floor(Math.random()*10);
+  const probHome = (homeScore/(homeScore+awayScore))*100;
+  return {probHome:probHome.toFixed(1),probAway:(100-probHome).toFixed(1),homeScore,awayScore};
+}
+
+/* ---------- UI wiring ---------- */
+document.addEventListener('DOMContentLoaded', ()=>{
+  // tabs
+  $$('header nav button.tab').forEach(b=>{
+    b.addEventListener('click', ()=>{ $$('header nav button.tab').forEach(x=>x.classList.remove('active')); b.classList.add('active'); });
+  });
+
+  // populate selects
+  const predHome = $('#predHome'), predAway = $('#predAway');
+  state.teams.forEach(t=>{ predHome.innerHTML += `<option value="${t.code}">${t.name}</option>`; predAway.innerHTML += `<option value="${t.code}">${t.name}</option>`; });
+
+  // basic event bindings
+  $('#runPred').addEventListener('click', ()=>{
+    const r = runPrediction($('#predHome').value, $('#predAway').value);
+    $('#predResult').innerHTML = r ? `<div class="card"><strong>${r.probHome}%</strong> chance for home (${$('#predHome').selectedOptions[0].text}) • <strong>${r.probAway}%</strong> for away</div>` : '<div class="card">Choose teams</div>';
+  });
+
+  $('#quickSearch').addEventListener('input', ()=>{
+    const q = $('#quickSearch').value.trim().toLowerCase();
+    const results = state.players.filter(p=> (p.name+p.country+p.role).toLowerCase().includes(q)).slice(0,8);
+    $('#quickResults').innerHTML = results.map(p=>`<div style="display:flex;gap:8px;align-items:center;padding:8px;border-radius:8px"><img src="${p.avatar}" style="width:44px;height:44px;border-radius:50%"><div><strong>${p.name}</strong><div style="font-size:12px;color:var(--muted)">${p.country} • ${p.role}</div></div></div>`).join('') || '<div class="muted-label">No quick results</div>';
+  });
+
+  $('#playerSearch').addEventListener('input', renderPlayerGrid);
+  $('#filterRole').addEventListener('change', renderPlayerGrid);
+  $('#sortBy').addEventListener('change', renderPlayerGrid);
+  $('#clearFilters').addEventListener('click', ()=>{ $('#playerSearch').value=''; $('#filterRole').value=''; $('#sortBy').value='rating'; renderPlayerGrid(); });
+
+  $('#addRandomPlayer').addEventListener('click', ()=>{
+    const id = 'p'+(Math.random()*10000|0);
+    const r = ['Batsman','Bowler','Allrounder'][Math.floor(Math.random()*3)];
+    const p = {id,name:'Player '+id,role:r,country:['India','Australia','England'][Math.floor(Math.random()*3)],rating:70+Math.floor(Math.random()*30),runs:Math.floor(Math.random()*10000),wickets:Math.floor(Math.random()*500),avatar:`https://picsum.photos/seed/${id}/128`};
+    state.players.push(p);
+    renderPlayerGrid();
+  });
+
+  // teams & stadiums & records render
+  renderPlayerGrid();
+  renderTeamTabs();
+  renderStadiums();
+  renderWorldRecords();
+
+  // world records force refresh
+  $('#forceRecords').addEventListener('click', ()=>{ fetchWorldRecords($('#recordSource').value, $('#recordUrl').value) });
+
+  // live commentary connect
+  $('#connectSim').addEventListener('click', ()=>simulateCommentaryStart());
+  $('#disconnectSim').addEventListener('click', ()=>stopCommentary());
+
+  // API key guide modal
+  $('#openApiGuide').addEventListener('click', ()=> {
+    showModal(`<h3>API Key Guide</h3>
+      <p class="small">Paste your keys in Tools → API Key Storage. For OpenWeatherMap, sign up and create an API key. For live cricket APIs, follow your provider docs.</p>
+      <ul style="color:var(--muted)"><li>Store keys in localStorage for client usage (demo only).</li><li>For production, keep keys on your server and proxy calls.</li></ul>
+    `);
+  });
+
+  // neon toggle (save preference)
+  const neonToggle = $('#toggleNeon');
+  neonToggle.addEventListener('click', ()=>{
+    document.body.classList.toggle('neon');
+    localStorage.setItem('pref-neon', document.body.classList.contains('neon') ? '1' : '0');
+  });
+  if(localStorage.getItem('pref-neon')==='0') document.body.classList.remove('neon');
+
+  // API keys UI
+  $('#saveKeys').addEventListener('click', ()=>{
+    const k = $('#owmKey').value.trim(); if(k) localStorage.setItem('owmKey',k);
+    alert('Saved keys locally (demo).');
+  });
+  $('#clearKeys').addEventListener('click', ()=>{ localStorage.removeItem('owmKey'); $('#owmKey').value=''; alert('Cleared keys.'); });
+  $('#owmKey').value = localStorage.getItem('owmKey') || '';
+
+  // simulate main simulate button
+  $('#startSim').addEventListener('click', ()=>{
+    const res = simulateMatch('IND','AUS',20);
+    showModal(`<h3>Simulation Result</h3>
+      <p class="small">Winner: <strong>${res.winner}</strong></p>
+      <p>Home: ${res.home} • Away: ${res.away}</p>
+      <h4>Summary</h4>
+      <pre style="background:#001C23;padding:10px;border-radius:8px;color:#baf7d8">${res.comments.join('\\n')}</pre>
+    `);
+  });
+
+  // quick connect to sim for live summary
+  $('#connectSim').click();
+
+  // populate pred selects
+  predHome.value = state.teams[0]?.code || '';
+  predAway.value = state.teams[1]?.code || '';
+});
+
+/* ---------- Extra helpers & public API hooks ---------- */
+
+/* Public: plug in a real live feed by replacing simulateCommentaryStart logic
+   Example: connect WebSocket:
+   function connectWS(url, token){ const ws = new WebSocket(url); ws.onmessage = e => handleCommentaryJSON(JSON.parse(e.data)); }
+*/
+function handleCommentaryJSON(msg){
+  // expected structure {matchId,over,ball,event,scoreHome,scoreAway,status}
+  const node = document.createElement('div'); node.className='ball';
+  node.innerHTML = `<div class="over">${msg.over}.${msg.ball}</div><div>${msg.event}</div>`;
+  $('#commentary').prepend(node);
+  // update scoreboard if present
+  if(msg.scoreHome) $('#homeScore').textContent = msg.scoreHome;
+  if(msg.scoreAway) $('#awayScore').textContent = msg.scoreAway;
+}
+
+/* Weather + prediction hooks (uses OpenWeatherMap if API key provided)
+   - Save OpenWeatherMap key in localStorage under 'owmKey'
+   - Uses onecall endpoints. Replace as needed for other providers.
+*/
+async function fetchWeatherForPlace(lat,lon){
+  const key = localStorage.getItem('owmKey');
+  if(!key) return {ok:false, msg:'No API key saved (Tools) - using demo'};
+  try{
+    const res = await fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&units=metric&appid=${key}`);
+    if(!res.ok) return {ok:false,msg:'API error: '+res.status};
+    const json = await res.json();
+    // return a simplified weather object
+    return {ok:true, temp:json.current.temp, humidity:json.current.humidity, wind:json.current.wind_speed, rainProb: json.hourly?.[0]?.pop || 0, dewPoint: json.current.dew_point || 0};
+  }catch(e){ return {ok:false,msg:e.message}; }
+}
+
+/* Example use: fetchWeatherForPlace(28.6139,77.2090).then(console.log) */
+
+/* ---------- Stadium/team simulation helper ---------- */
+function simulateTeamPerformance(code){
+  const t = state.teams.find(x=>x.code===code);
+  if(!t) return alert('Team not found');
+  const perf = Math.round(randomNormal(t.rating/2 + 50, 6));
+  showModal(`<h3>${t.name} — Performance Simulation</h3><p class="small">Simulated index: <strong>${perf}</strong></p><p style="color:var(--muted)">Higher is better. Use this to seed the match simulator.</p>`);
+}
+
+/* ---------- Quick setup for initial visual ---------- */
+(function initUI(){
+  // show home by default
+  showTab('home');
+})();
+</script>

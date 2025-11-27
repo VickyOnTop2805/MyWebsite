@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Cricket Pulse — Home</title>
+<link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+<header class="header">
+  <div class="brand"><div class="logo">CP</div><div><div style="font-weight:800">Cricket Pulse</div><div class="small">Bright. Fast. 2025</div></div></div>
+  <nav class="nav"><a href="index.html">Home</a><a href="news.html">News</a><a href="matches.html">2025 Matches</a><a href="features.html">Features</a><a href="about.html">About</a></nav>
+</header>
+<main class="container">
+  <section class="card">
+    <h1 style="color:#07203a">All the cricket — in bold blue & yellow.</h1>
+    <p class="small">Welcome to a packaged site with separate pages. Live scores section (powered by your chosen API) is available on the Matches page.</p>
+    <div style="display:flex;gap:12px;margin-top:12px">
+      <a class="nav" href="matches.html"><div class="card small">View Live Scores</div></a>
+      <a class="nav" href="news.html"><div class="card small">Latest News</div></a>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>Live scores (sample)</h2>
+    <div id="live-scores-output" class="matches small">Loading (matches shown on Matches page too)...</div>
+  </section>
+
+  <section class="grid">
+    <div class="card news-card"><img src="https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?auto=format&fit=crop&w=800&q=60"><h3>Thrilling finish in a high-scoring duel</h3><p class="small">A last-over six sealed the deal.</p></div>
+    <div class="card news-card"><img src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=800&q=60"><h3>Weather & pitch guide</h3><p class="small">Preview of key fixtures.</p></div>
+    <div class="card news-card"><img src="https://images.unsplash.com/photo-1558980664-10e717b0805e?auto=format&fit=crop&w=800&q=60"><h3>Fans' corner</h3><p class="small">Moments from the stands.</p></div>
+  </section>
+</main>
+<footer class="footer">Made with a blue & yellow gradient. For live scores, edit assets/main.js with your API details.</footer>
+<script src="assets/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Cricket Pulse — 2025 Matches</title><link rel="stylesheet" href="assets/styles.css"></head>
+<body>
+<header class="header"><div class="brand"><div class="logo">CP</div><div><div style="font-weight:800">Cricket Pulse</div><div class="small">2025 Matches</div></div></div><nav class="nav"><a href="index.html">Home</a><a href="news.html">News</a><a href="matches.html">2025 Matches</a><a href="features.html">Features</a><a href="about.html">About</a></nav></header>
+<main class="container">
+  <section class="card"><h2>Live & Recent Matches</h2><p class="small">This page requests live data from your configured API. If you don't have an API key yet, sign up at one of the providers listed in README.txt.</p>
+    <div id="live-scores-output" class="matches"></div>
+  </section>
+
+  <section class="card">
+    <h3>Filter matches</h3>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">
+      <input id="filter-team" placeholder="Team name (e.g. Australia)" style="padding:8px;border-radius:8px;border:1px solid #ddd">
+      <select id="filter-type" style="padding:8px;border-radius:8px">
+        <option value="">All formats</option><option value="Test">Test</option><option value="ODI">ODI</option><option value="T20">T20</option>
+      </select>
+      <button id="apply-filter" style="padding:8px;border-radius:8px;cursor:pointer">Apply</button>
+    </div>
+    <div id="filter-results" style="margin-top:12px"></div>
+  </section>
+</main>
+<footer class="footer">Cricket Pulse — Matches</footer>
+<script src="assets/main.js"></script>
+<script>
+  // Simple client-side match filter that reuses the live matches loaded by main.js
+  document.getElementById('apply-filter').addEventListener('click', async () => {
+    const team = document.getElementById('filter-team').value.toLowerCase().trim();
+    const type = document.getElementById('filter-type').value;
+    const out = document.getElementById('filter-results');
+    out.innerHTML = '<div class="small">Filtering...</div>';
+    try {
+      // Attempt to fetch the same live matches endpoint used by main.js
+      if(!window.API_CONFIG) { out.innerHTML = '<div class="small">API not configured in assets/main.js</div>'; return; }
+      const url = `${window.API_CONFIG.API_URL}/matches/live?apikey=${window.API_CONFIG.API_KEY}`;
+      const res = await fetch(url);
+      if(!res.ok) throw new Error('Network error');
+      const json = await res.json();
+      const matches = json.matches || json.data || [];
+      const filtered = matches.filter(m => {
+        const title = (m.teams || m.title || '').toLowerCase();
+        const format = (m.type || m.format || m.matchType || '').toString();
+        const teamOk = team ? title.includes(team) : true;
+        const typeOk = type ? format.toLowerCase().includes(type.toLowerCase()) : true;
+        return teamOk && typeOk;
+      });
+      if(filtered.length === 0) out.innerHTML = '<div class="small">No matches found for those filters.</div>';
+      else {
+        out.innerHTML = '';
+        filtered.forEach(m => {
+          const el = document.createElement('div'); el.className='card match';
+          const title = m.teams || m.title || (m.home+' vs '+m.away);
+          const score = m.score||m.score_text||m.currentScore||'';
+          el.innerHTML = `<div><div style="font-weight:800">${title}</div><div class="small">${m.type||m.format||''}</div></div><div style="text-align:right"><div class="small">Score</div><div style="font-weight:700">${score}</div></div>`;
+          out.appendChild(el);
+        });
+      }
+    } catch (err) {
+      out.innerHTML = '<div class="small">Error filtering: '+err.message+'</div>';
+    }
+  });
+</script>
+</body>
+</html>

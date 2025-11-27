@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Cricket Pulse — 2025 Highlights</title>
+  <meta name="description" content="A colorful cricket site with news, 2025 matches and features. Blue & yellow gradient theme."/>
+  <style>
+    :root{
+      --blue:#0b61ff;
+      --yellow:#ffd400;
+      --bg-gradient: linear-gradient(135deg,var(--blue), #2aa8ff 40%, var(--yellow));
+      --card-bg: rgba(255,255,255,0.92);
+      --muted: #6b7280;
+      --glass: rgba(255,255,255,0.06);
+      --radius: 14px;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+
+    /* Reset-ish */
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body,#app{height:100%}
+    body{background:linear-gradient(180deg,#071029 0%, #0b2340 100%);color:#07203a}
+
+    /* Header */
+    header{
+      background: var(--bg-gradient);
+      color: #023356;
+      padding:32px 24px;
+      border-bottom-left-radius:24px;
+      border-bottom-right-radius:24px;
+      box-shadow: 0 8px 30px rgba(2,19,40,0.4);
+      position:relative;
+	display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap
+    }
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{
+      width:56px;height:56px;border-radius:12px;background:linear-gradient(120deg,#fff9b3, #fff0a6 40%);display:flex;align-items:center;justify-content:center;font-weight:700;color:#07203a;box-shadow:0 6px 18px rgba(2,19,40,0.25)
+    }
+    .site-title{font-size:20px;font-weight:700}
+    .site-sub{font-size:12px;color:rgba(2,19,40,0.7)}
+
+    nav{display:flex;gap:12px;align-items:center}
+    nav a{padding:8px 12px;border-radius:10px;text-decoration:none;font-weight:600;color:rgba(2,19,40,0.85)}
+    nav a.active{background:rgba(255,255,255,0.85);box-shadow:0 4px 12px rgba(2,19,40,0.12)}
+
+    /* Layout */
+    .container{max-width:1100px;margin:26px auto;padding:0 20px}
+    .hero{
+      margin-top:18px;background:linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02));padding:22px;border-radius:var(--radius);
+      display:grid;grid-template-columns:1fr 340px;gap:18px;align-items:start
+    }
+    .hero-main h1{font-size:28px;color:#fff;margin-bottom:8px}
+    .hero-main p{color:rgba(255,255,255,0.88);margin-bottom:16px}
+    .cta{display:flex;gap:12px}
+    .btn{background:#fff;padding:10px 14px;border-radius:10px;font-weight:700;cursor:pointer}
+    .outline{background:transparent;border:2px solid rgba(255,255,255,0.14);color:#fff}
+
+    /* Cards */
+    .card{background:var(--card-bg);padding:16px;border-radius:12px;box-shadow:0 8px 30px rgba(3,10,18,0.06)}
+    .small{font-size:13px;color:var(--muted)}
+
+    /* News grid */
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:18px}
+    .news-card{overflow:hidden}
+    .news-card img{width:100%;height:150px;object-fit:cover;border-radius:10px}
+    .news-card h3{font-size:16px;margin-top:10px}
+    .news-card p{color:var(--muted);font-size:13px;margin-top:6px}
+
+    /* Matches list */
+    .matches{display:flex;flex-direction:column;gap:10px}
+    .match{display:flex;justify-content:space-between;align-items:center;padding:12px;border-radius:10px;background:linear-gradient(90deg, rgba(11,97,255,0.06), rgba(255,212,0,0.03));}
+    .teams{display:flex;gap:10px;align-items:center}
+    .team{display:flex;flex-direction:column;align-items:center}
+    .team .abbr{font-weight:800}
+    .match .meta{color:var(--muted);font-size:13px}
+
+    /* Article */
+    .article{line-height:1.6}
+    .article h2{margin-bottom:8px}
+
+    /* Footer */
+    footer{margin:30px auto 60px;max-width:1100px;padding:12px 20px;color:#9aa6b2}
+
+    /* Responsive */
+    @media (max-width:980px){
+      .grid{grid-template-columns:repeat(2,1fr)}
+      .hero{grid-template-columns:1fr}
+    }
+    @media (max-width:640px){
+      nav{order:3;width:100%;justify-content:space-around}
+      .grid{grid-template-columns:1fr}
+      .logo{width:48px;height:48px}
+      header{padding:18px}
+    }
+  </style>
+</head>
+<body>
+  <div id="app">
+    <header>
+      <div class="brand">
+        <div class="logo">CP</div>
+        <div>
+          <div class="site-title">Cricket Pulse</div>
+          <div class="site-sub">Bright. Fast. 2025 match highlights.</div>
+        </div>
+      </div>
+      <nav>
+        <a href="#" data-link="home" class="active">Home</a>
+        <a href="#" data-link="news">News</a>
+        <a href="#" data-link="matches">2025 Matches</a>
+        <a href="#" data-link="features">Features</a>
+        <a href="#" data-link="about">About</a>
+      </nav>
+    </header>
+
+    <main class="container">
+      <section id="home" class="page">
+        <div class="hero card">
+          <div class="hero-main">
+            <h1>All the cricket — in bold blue & yellow.</h1>
+            <p>Welcome to a colorful demo site focused on news and curated content for 2025 matches. Browse match reports, short analyses, and a rolling newsfeed.
+            </p>
+            <div class="cta">
+              <button class="btn" onclick="navigate('matches')">View 2025 Matches</button>
+              <button class="btn outline" onclick="navigate('news')">Latest News</button>
+            </div>
+
+            <div style="margin-top:18px;display:flex;gap:12px;align-items:center">
+              <div class="card small" style="padding:12px">Top story: <strong>Stellar chase in January</strong></div>
+              <div class="card small" style="padding:12px">Feature: <strong>Batting form to watch</strong></div>
+            </div>
+
+            <div class="grid">
+              <div class="news-card card">
+                <img src="https://images.unsplash.com/photo-1508609349937-5ec4ae374ebf?auto=format&fit=crop&w=800&q=60" alt="cricket action"/>
+                <h3>Thrilling finish in a high-scoring duel</h3>
+                <p>Match report: A last-over six sealed the deal in a match that had fans on the edge of their seats.</p>
+              </div>
+              <div class="news-card card">
+                <img src="https://images.unsplash.com/photo-1521412644187-c49fa049e84d?auto=format&fit=crop&w=800&q=60" alt="stadium"/>
+                <h3>Weather & pitch guide: What to expect</h3>
+                <p>Preview: We break down the surfaces and conditions for key 2025 fixtures.</p>
+              </div>
+              <div class="news-card card">
+                <img src="https://images.unsplash.com/photo-1558980664-10e717b0805e?auto=format&fit=crop&w=800&q=60" alt="fans"/>
+                <h3>Fans' corner: Moments from the stands</h3>
+                <p>Opinion: The crowd made the match — here are the moments they won't forget.</p>
+              </div>
+            </div>
+
+          </div>
+
+          <aside>
+            <div class="card">
+              <h4 style="margin-bottom:8px">Upcoming fixtures (sample)</h4>
+              <div class="matches">
+                <div class="match">
+                  <div>
+                    <div class="small">Jan 15, 2025 • Adelaide Oval</div>
+                    <div class="teams" style="margin-top:6px">
+                      <div class="team"><div class="abbr">AUS</div><div class="small">Australia</div></div>
+                      <div class="small">vs</div>
+                      <div class="team"><div class="abbr">IND</div><div class="small">India</div></div>
+                    </div>
+                  </div>
+                  <div class="meta">Test • Day 1</div>
+                </div>
+
+                <div class="match">
+                  <div>
+                    <div class="small">Mar 02, 2025 • Melbourne</div>
+                    <div class="teams" style="margin-top:6px">
+                      <div class="team"><div class="abbr">ENG</div><div class="small">England</div></div>
+                      <div class="small">vs</div>
+                      <div class="team"><div class="abbr">AUS</div><div class="small">Australia</div></div>
+                    </div>
+                  </div>
+                  <div class="meta">ODI • 50 overs</div>
+                </div>
+
+                <div class="match">
+                  <div>
+                    <div class="small">Oct 11, 2025 • Sydney</div>
+                    <div class="teams" style="margin-top:6px">
+                      <div class="team"><div class="abbr">AUS</div><div class="small">Aces</div></div>
+                      <div class="small">vs</div>
+                      <div class="team"><div class="abbr">RCB</div><div class="small">Rival Club</div></div>
+                    </div>
+                  </div>
+                  <div class="meta">Big Bash • Night</div>
+                </div>
+
+              </div>
+            </div>
+
+            <div style="height:18px"></div>
+            <div class="card small">Newsletter: Sign up for concise daily highlights.</div>
+          </aside>
+        </div>
+
+      </section>
+
+      <section id="news" class="page" style="display:none;margin-top:18px">
+        <div class="card">
+          <h2>Latest News</h2>
+          <p class="small">Curated headlines and short match summaries.</p>
+
+          <article style="margin-top:12px" class="card article">
+            <h3>Jan 15, 2025 — Adelaide: Last-over thriller</h3>
+            <p class="small">A packed crowd witnessed a sensational chase where the visiting side sealed victory with a six in the final over. (Sample content)</p>
+          </article>
+
+          <article style="margin-top:12px" class="card article">
+            <h3>Feb 08, 2025 — Injury update</h3>
+            <p class="small">Key fast bowler rested after minor niggle — team management optimistic about recovery. (Sample content)</p>
+          </article>
+
+        </div>
+      </section>
+
+      <section id="matches" class="page" style="display:none;margin-top:18px">
+        <div class="card">
+          <h2>2025 Matches — Quick view</h2>
+          <p class="small">Key matches and short recaps. (Content shown here is sample/demo content; replace with live data as needed.)</p>
+
+          <div style="margin-top:12px" class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+              <div>
+                <h3>Australia vs India — Adelaide, Jan 15, 2025</h3>
+                <p class="small">Test match • Result: Australia won by 3 wickets (sample summary)</p>
+              </div>
+              <div style="text-align:right">
+                <div class="small">Scoreline</div>
+                <div style="font-weight:800;margin-top:6px">AUS 295 & 180/7 • IND 320</div>
+              </div>
+            </div>
+            <p style="margin-top:10px">Match report: A test of patience turned into a dramatic finish as the home side chased down the target in a tense final session. Player of the match: John Doe (sample).</p>
+          </div>
+
+          <div style="margin-top:12px" class="card">
+            <h3>England vs Australia — Melbourne, Mar 02, 2025</h3>
+            <p class="small">ODI • Result: England won by 24 runs (sample summary)</p>
+            <p style="margin-top:8px">Summary: A disciplined bowling performance restricted the hosts to 220, then disciplined batting and sharp running sealed it for the tourists.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <section id="features" class="page" style="display:none;margin-top:18px">
+        <div class="card">
+          <h2>Features & Analysis</h2>
+          <p class="small">In-depth pieces, tactical analysis and player spotlights.</p>
+
+          <div style="margin-top:12px" class="card article">
+            <h3>Form watch: Top 5 batters of early 2025</h3>
+            <p>Shortlist of batters in great touch — what bowlers need to plan for.</p>
+          </div>
+
+          <div style="margin-top:12px" class="card article">
+            <h3>Pitch toolbox: Preparing for pace-friendly wickets</h3>
+            <p>How teams adjust when the deck offers early movement.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <section id="about" class="page" style="display:none;margin-top:18px">
+        <div class="card">
+          <h2>About Cricket Pulse</h2>
+          <p class="small">A demo site showcasing a bright blue & yellow theme. Use this template to plug in live APIs, RSS feeds, or your own reporting.</p>
+          <p style="margin-top:8px">Want features: live scores, commentary, or team pages? Tell me which and I’ll add them to the code.</p>
+        </div>
+      </section>
+
+    </main>
+
+    <footer>
+      <div class="container">Made with a blue & yellow gradient. This is sample/demo content — replace with real match data or connect an API for live scores.</div>
+    </footer>
+  </div>
+
+  <script>
+    // Simple SPA navigation
+    const links = document.querySelectorAll('nav a');
+    const pages = document.querySelectorAll('.page');
+
+    function showPage(id){
+      pages.forEach(p => p.style.display = p.id === id ? 'block' : 'none');
+      links.forEach(a => a.classList.toggle('active', a.dataset.link === id));
+      window.scrollTo({top:0, behavior:'smooth'});
+    }
+
+    function navigate(to){ showPage(to) }
+
+    links.forEach(a => a.addEventListener('click', e => { e.preventDefault(); showPage(a.dataset.link) }))
+
+    // default
+    showPage('home');
+
+    // small dynamic: replace sample images with better placeholder if none
+    document.addEventListener('DOMContentLoaded', ()=>{
+      document.querySelectorAll('img').forEach(img => {
+        if(img.naturalWidth === 0) img.style.background='#e6eef9';
+      })
+    })
+  </script>
+</body>
+</html>
